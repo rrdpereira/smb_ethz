@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+	<name>smb_slam</name>
+	<version>0.1.0</version>
+	<description>SMB mapping and localization</description>
+	<maintainer email="jelavice@ethz.ch">EJ</maintainer>
+	<license>BSD-3</license>
+	<author email="jelavice@ethz.ch">EJ</author>
+
+	<buildtool_depend>catkin</buildtool_depend>
+
+	<depend>roscpp</depend>
+	<depend>nav_msgs</depend>
+	<depend>pointmatcher_ros</depend>
+	<depend>libpointmatcher</depend>
+	<depend>roslib</depend>
+	<depend>icp_localization</depend>
+	
+	<build_depend>libgoogle-glog-dev</build_depend>
+
+</package>

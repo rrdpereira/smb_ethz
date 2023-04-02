@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- General -->
+  <arg name="smb_name"
+       default="$(env SMB_NAME)"
+       doc="Name of the SMB in the format smb26x (relevant for calibrations)." />
+
+  <!-- launch sensors -->
+  <arg name="launch_sensors"
+       default="true"
+       doc="Launch sensors like IMU, rgb camera etc. Overrides all other sensor arguments if set to false."/>
+
+  <!-- launch IMU interface for ADIS 16448 -->
+  <arg name="launch_imu_interface"                       
+       default="true" 
+       doc="Launch the IMU related nodes."/>
+  
+  <!-- launch RGB camera -->
+  <arg name="launch_rgb_cam"                       
+       default="remote" 
+       doc="Define whether and where to run the rgb camera nodes. Options: 'remote' (on Jetson Xavier), 'local' or 'false'."/>
+
+  <!-- launch tracking cam -->
+  <arg name="launch_tracking_cam"
+       default="true"
+       doc="Launch the tracking camera related nodes."/>
+  
+  <!-- launch depth cam -->
+  <arg name="launch_depth_cam" 
+       default="false" 
+       doc="Launch the depth camera related nodes."/>
+
+  <!-- use lidar odometry -->
+  <arg name="use_lidar_odometry"
+       default="false"
+       doc="Use lidar odometry instead of the tracking camera odometry if set to true."/>
+  
+  <!-- enable ekf -->
+  <arg name="enable_ekf" 
+       default="false"
+       doc="Launch ekf node. Used for the wheel odometry."/>
+
+  <!-- launch rviz -->
+  <arg name="launch_rviz"
+       default="false"
+       doc="Launch rviz to visualize the robot."/>
+
+  <!-- mpc -->
+  <arg name="mpc"
+       default="false"
+       doc="Launch the MPC node."/>
+
+  <arg name="mpc_track_local_plan"
+       default="false"
+       doc="Track the plan published from the mpc_path_publisher.py script in smb_mpc package."/>
+
+  <!-- control namespace -->
+  <arg name="control_namespace"
+      default="control"
+      doc="Namespace for the control node."/>
+
+  <!-- decription name -->
+  <arg name="description_name"
+       default="smb_description"
+       doc="Name for the robot description."/>
+
+  <!-- command smb -->
+  <arg name="command_smb"
+       default="true"
+       doc="Send twist commands from the software stack to the robot."/>
+       
+  <!-- keyboard_teleop -->
+  <arg name="keyboard_teleop"
+        default="false"
+        doc="Launch node to send control commands (twist msgs) using the keyboard."/>
+
+  <!-- Set global simulation parameter -->
+  <param name="/simulation" value="false"/>
+
+  <!-- start sensors -->
+  <group if="$(arg launch_sensors)">
+    <include file="$(find smb)/launch/sensors.launch">
+      <arg name="smb_name"                 value="$(arg smb_name)"/>
+      <arg name="launch_imu_interface"     value="$(arg launch_imu_interface)"/>
+      <arg name="launch_rgb_cam"           value="$(arg launch_rgb_cam)"/>
+      <arg name="launch_depth_cam"         value="$(arg launch_depth_cam)"/>
+      <arg name="launch_tracking_cam"      value="$(arg launch_tracking_cam)"/>
+    </include>
+  </group>
+
+  <group ns="odometry" if="$(arg use_lidar_odometry)">
+    <node pkg="odometry_conversion" type="odometry_conversion_node" name="lidar_odometry_conversion">
+      <param name="in_odom_frame" value="rslidar"/>
+      <param name="in_sensor_frame" value="imu"/>
+      <param name="out_odom_frame" value="lidar_odom_base"/>
+      <param name="out_sensor_frame" value="base_link"/>
+      <remap from="/camera/odom/sample" to="/msf_core/odometry"/>
+    </node>
+    <include file="$(find smb_slam)/launch/compslam/smb_cmpslam.launch">
+      <arg name="launch_rviz" value="false"/>
+      <arg name="stitch_pointclouds"  value="false"/>
+    </include>
+  </group>
+
+  <group ns="odometry" unless="$(arg use_lidar_odometry)">
+    <node pkg="odometry_conversion" type="odometry_conversion_node" name="tracking_camera_odometry_conversion">
+      <param name="in_odom_frame" value="camera_pose_frame"/>
+      <param name="in_sensor_frame" value="camera_pose_frame"/>
+      <param name="out_odom_frame" value="tracking_camera_odom"/>
+      <param name="out_sensor_frame" value="base_link"/>
+    </node>
+  </group>
+
+  <include file="$(find smb_lowlevel_controller)/launch/smb_lowlevel_controller.launch" ns="$(arg control_namespace)">
+	  <arg name="description_name"            value="/$(arg description_name)"/>
+	  <arg name="command_smb"                 value="$(arg command_smb)"/>
+  </include>
+
+  
+  <include file="$(find smb_control)/launch/smb_control.launch">
+    <arg name="enable_ekf" value="$(arg enable_ekf)" />
+    <arg name="description_name" value="$(arg description_name)"/>
+    <arg name="control_namespace" value="$(arg control_namespace)"/>
+    <arg name="mpc"               value="$(arg mpc)"/>
+    <arg name="mpc_track_local_plan" value="$(arg mpc_track_local_plan)"/>
+    <arg name="keyboard_teleop"         value="$(arg keyboard_teleop)"/>
+  </include>
+
+  <include file="$(find smb_opc)/launch/opc.launch" if="$(arg launch_rviz)"/>
+
+</launch>

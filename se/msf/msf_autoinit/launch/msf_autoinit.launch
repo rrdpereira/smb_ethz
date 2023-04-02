@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="threshold_msg_no_for_init"  default="5" />
+  <arg name="input_topic_name"           default="/loam/odometry" />
+  <arg name="init_service_name"          default="/msf_loam_body_imu/msf_loam_body_imu/pose_sensor/initialize_msf_scale" />
+  <arg name="init_scale"                 default="1.0" />
+
+  <node pkg="msf_autoinit" name="msf_autoinit" type="msf_autoinit.py" output="screen">
+    <param name="threshold_msg_no_for_init" value="$(arg threshold_msg_no_for_init)"/>
+    <param name="input_topic_name"          value="$(arg input_topic_name)"/>
+    <param name="init_service_name"         value="$(arg init_service_name)"/>
+    <param name="init_scale"                value="$(arg init_scale)"/>
+  </node>
+
+</launch>

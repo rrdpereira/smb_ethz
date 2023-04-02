@@ -1,0 +1,21 @@
+<package>
+  <name>msf_autoinit</name>
+  <version>1.0.1</version>
+  <description>Automatic initializer for msf with IMU and odometry input msgs</description>
+  <maintainer email="timonh@ethz.ch">Timon Homberger</maintainer>
+
+  <license>Apache 2.0</license>
+
+  <author>Timon Homberger</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>sensor_fusion_comm</build_depend>
+  <build_depend>rospy</build_depend>
+
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>sensor_fusion_comm</run_depend>
+  <run_depend>rospy</run_depend>
+
+</package>

@@ -1,0 +1,6 @@
+library 'continuous_integration_pipeline'
+ciPipeline("--generate-clone-deps-only-on-branches master \
+            --environment anymal \
+            --dependencies 'git@github.com:ethz-asl/glog_catkin.git;master;git' \
+                           'git@github.com:ethz-asl/gflags_catkin.git;master;git' \
+                           'git@github.com:catkin/catkin_simple.git;master;git'")
