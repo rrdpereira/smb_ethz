@@ -3,13 +3,12 @@ joint_state_controller:
   type: "joint_state_controller/JointStateController"
   publish_rate: 50
 
-
 smb_diff_drive:
   type: "diff_drive_controller/DiffDriveController"
-  left_wheel: ['LF_WHEEL_JOINT']
-  right_wheel: ['RF_WHEEL_JOINT']
-  # left_wheel: ['LF_WHEEL_JOINT', 'LH_WHEEL_JOINT']
-  # right_wheel: ['RF_WHEEL_JOINT', 'RH_WHEEL_JOINT']
+  # left_wheel: ['LF_WHEEL_JOINT']
+  # right_wheel: ['RF_WHEEL_JOINT']
+  left_wheel: ['LF_WHEEL_JOINT', 'LH_WHEEL_JOINT']
+  right_wheel: ['RF_WHEEL_JOINT', 'RH_WHEEL_JOINT']
   publish_rate: 50
   pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
   # pose_covariance_diagonal: [0.1, 0.001, 0.001, 0.001, 0.001, 0.3]

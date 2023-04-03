@@ -1,4 +1,5 @@
 # see https://github.com/cra-ros-pkg/robot_localization/blob/noetic-devel/params/ekf_template.yaml 
+map_frame: map
 odom_frame: odom
 base_link_frame: base_link
 world_frame: odom

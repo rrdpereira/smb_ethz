@@ -12,9 +12,15 @@
   <arg name="world_file"                            default="$(find smb_gazebo)/worlds/$(arg world).world"/>
 
   <!-- Set the initial pose of the robot's main body -->
-  <arg name="x"                                     default="0.0"/>
+  <!-- <arg name="x" default="13.0"/>
+  <arg name="y" default="6.0"/>
+  <arg name="z" default="0.8"/> -->
+  <!-- <arg name="x"                                     default="0.0"/>
   <arg name="y"                                     default="0.0"/>
-  <arg name="z"                                     default="0.4"/>
+  <arg name="z"                                     default="0.4"/> -->
+  <arg name="x"                                     default="12.0"/>
+  <arg name="y"                                     default="6.0"/>
+  <arg name="z"                                     default="0.3"/>  
   <arg name="roll"                                  default="0.0"/>
   <arg name="pitch"                                 default="0.0"/>
   <arg name="yaw"                                   default="0.0"/>

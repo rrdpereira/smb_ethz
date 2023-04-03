@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+    <!--  **************** Teleoperation ****************  -->
+    <node name="teleop_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
+        <remap from="/cmd_vel" to="/keyboard_teleop/cmd_vel"/>
+        <param name="speed" value="0.5"/>
+        <param name="turn" value="0.5"/>
+    </node>
+</launch>

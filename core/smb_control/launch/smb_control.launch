@@ -8,7 +8,7 @@
   <arg name="joint_states_topic"         default="joint_states"/>
   <arg name="description_file"           default="$(find smb_description)/urdf/smb_standalone.urdf.xacro"/>
   <arg name="simulation"                 default="false"/>
-  <arg name="joystick"                   default="true"/>
+  <arg name="joystick"                   default="false"/>
   <arg name="mpc"                        default="false"/>
   <arg name="mpc_track_local_plan"       default="false"/>
   <arg name="keyboard_teleop"            default="false"/>
